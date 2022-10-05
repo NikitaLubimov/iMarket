@@ -35,4 +35,8 @@ public class ProductRepository {
     public void addProduct (Product product) {
         repoProducts.add(product);
     }
+
+    public void deleteProductById(long id) {
+        repoProducts.removeIf(product -> product.getId() == id);
+    }
 }

@@ -17,10 +17,14 @@ public class ProductService {
 
 
     public List<Product> getAllProductList() {
-     return productRepository.getAllProduct();
+        return productRepository.getAllProduct();
     }
 
     public void addProductRepo(Product product) {
         productRepository.addProduct(product);
+    }
+
+    public void deleteProduct(long id) {
+        productRepository.deleteProductById(id);
     }
 }
