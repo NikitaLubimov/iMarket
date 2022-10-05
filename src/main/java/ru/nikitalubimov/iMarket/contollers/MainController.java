@@ -23,6 +23,17 @@ public class MainController {
         return productService.getAllProductList();
     }
 
+    @GetMapping("/products/delete/{id}")
+    public void deleteProduct(@PathVariable long id) {
+        productService.deleteProduct(id);
+    }
+
+    @GetMapping("/products/add/{id},{title},{cost}")
+    public void addProduct(@PathVariable long id, @PathVariable String title, @PathVariable int cost) {
+        Product product = new Product(id,title,cost);
+        productService.addProductRepo(product);
+    }
+
     @GetMapping("/add")
     public String addProduct(Model model) {
         model.addAttribute("product", new Product());

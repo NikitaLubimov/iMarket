@@ -8,6 +8,20 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
             });
     };
 
+    $scope.deleteProduct = function (productId) {
+        $http.get(contextPath + '/products/delete/' + productId)
+            .then(function (response) {
+                $scope.loadProducts();
+        });
+    };
+
+    $scope.addProduct = function (productId,productTitle,productCost) {
+        $http.get(contextPath + '//products/add/' + productId,productTitle,productCost)
+            .then(function (response){
+               $scope.loadProducts();
+            });
+    }
+
     $scope.loadProducts();
 
 });

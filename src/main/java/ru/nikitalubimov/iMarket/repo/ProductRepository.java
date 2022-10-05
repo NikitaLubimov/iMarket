@@ -6,6 +6,7 @@ import ru.nikitalubimov.iMarket.dto.Product;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ public class ProductRepository {
     }
 
     public List<Product> getAllProduct() {
-       return repoProducts;
+       return Collections.unmodifiableList(repoProducts);
     }
 
     public void addProduct (Product product) {
