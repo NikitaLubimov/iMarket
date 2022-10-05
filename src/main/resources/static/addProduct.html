@@ -13,7 +13,15 @@
     <h2>AddProduct</h2>
         <form class="container" ng-controller="indexController">
             <label for="id" class="form-label">ID</label>
-            <input type="number" class="" th:field="*{id}" id="id">
+            <input type="number" class="form-control" id="id" ng-model="product.id" required="required">
+            <br>
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control"  id="title" ng-model="product.title" required="required">
+            <br>
+            <label for="cost" class="form-label">Cost</label>
+            <input type="number" class="form-control" id="cost" ng-model="product.cost" required="required">
+            <br>
+            <input type="submit" class="btn btn-primary" ng-click="addProduct(product)" value="Сохранить">
         </form>
 </body>
 </html>

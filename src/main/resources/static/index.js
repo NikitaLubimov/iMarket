@@ -15,12 +15,15 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
-    $scope.addProduct = function (productId,productTitle,productCost) {
-        $http.get(contextPath + '//products/add/' + productId,productTitle,productCost)
-            .then(function (response){
-               $scope.loadProducts();
-            });
-    }
+    $scope.addProduct = function (product) {
+        $http.post(contextPath + '/products/add', product).success(function () {
+           $scope.product.id = '';
+           $scope.product.title = '';
+           $scope.product.cost = '';
+        }).then(function (response){
+            $scope.loadProducts();
+        })
+    };
 
     $scope.loadProducts();
 

@@ -28,9 +28,8 @@ public class MainController {
         productService.deleteProduct(id);
     }
 
-    @GetMapping("/products/add/{id},{title},{cost}")
-    public void addProduct(@PathVariable long id, @PathVariable String title, @PathVariable int cost) {
-        Product product = new Product(id,title,cost);
+    @RequestMapping(value = "/products/add", method = RequestMethod.POST)
+    public void addProduct(@RequestBody Product product) {
         productService.addProductRepo(product);
     }
 
