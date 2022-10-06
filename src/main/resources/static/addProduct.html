@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="index.js"></script>
+    <title>AddProduct</title>
+</head>
+<body>
+    <h2>AddProduct</h2>
+        <form class="container" ng-controller="indexController">
+            <label for="id" class="form-label">ID</label>
+            <input type="number" class="form-control" id="id" ng-model="product.id" required="required">
+            <br>
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control"  id="title" ng-model="product.title" required="required">
+            <br>
+            <label for="cost" class="form-label">Cost</label>
+            <input type="number" class="form-control" id="cost" ng-model="product.cost" required="required">
+            <br>
+            <a class="btn btn-primary" href="index.html" role="button" ng-click="addProduct(product)">Сохранить</a>
+        </form>
+</body>
+</html>

@@ -1,26 +1,35 @@
 package ru.nikitalubimov.iMarket.contollers;
 
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nikitalubimov.iMarket.dto.Product;
 import ru.nikitalubimov.iMarket.services.ProductService;
 
+import java.util.List;
 
-@Controller
-@RequiredArgsConstructor
-@RequestMapping("/products")
+
+@RestController
 public class MainController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
 
+    @GetMapping("/products/all")
+    public List<Product> getAllProductList () {
+        return productService.getAllProductList();
+    }
 
-    @GetMapping()
-    public String getProduct(Model model) {
-        model.addAttribute("listProducts",productService.getAllProductList());
-        return "RepoProducts.html";
+    @GetMapping("/products/delete/{id}")
+    public void deleteProduct(@PathVariable long id) {
+        productService.deleteProduct(id);
+    }
+
+    @RequestMapping(value = "/products/add", method = RequestMethod.POST)
+    public void addProduct(@RequestBody Product product) {
+        productService.addProductRepo(product);
     }
 
     @GetMapping("/add")
@@ -29,13 +38,10 @@ public class MainController {
         return "addProducts.html";
     }
 
-    @PostMapping
-    public String create( @ModelAttribute("product") Product product) {
-        productService.addProductRepo(product);
-        return "redirect:/products";
-    }
-
-
-
+//    @PostMapping
+//    public String create( @ModelAttribute("product") Product product) {
+//        productService.addProductRepo(product);
+//        return "redirect:/products";
+//    }
 
 }
