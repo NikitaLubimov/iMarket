@@ -10,7 +10,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
 
     $scope.deleteProduct = function (productId) {
         $http.get(contextPath + '/products/delete/' + productId)
-            .then(function (response) {
+            .then(function () {
                 $scope.loadProducts();
         });
     };
@@ -20,7 +20,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
            $scope.product.id = '';
            $scope.product.title = '';
            $scope.product.cost = '';
-        }).then(function (response){
+        }).then(function (){
             $scope.loadProducts();
         })
     };
