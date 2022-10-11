@@ -5,7 +5,8 @@ package ru.nikitalubimov.iMarket.contollers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.nikitalubimov.iMarket.dto.Product;
+import ru.nikitalubimov.iMarket.dao.ProductDaoImpl;
+import ru.nikitalubimov.iMarket.entity.Product;
 import ru.nikitalubimov.iMarket.services.ProductService;
 
 import java.util.List;
@@ -17,19 +18,22 @@ public class MainController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductDaoImpl productDao;
+
     @GetMapping("/products/all")
     public List<Product> getAllProductList () {
-        return productService.getAllProductList();
+        return productDao.getAllProductList();
     }
 
     @GetMapping("/products/delete/{id}")
     public void deleteProduct(@PathVariable long id) {
-        productService.deleteProduct(id);
+        productDao.deleteProductById(id);
     }
 
     @RequestMapping(value = "/products/add", method = RequestMethod.POST)
     public void addProduct(@RequestBody Product product) {
-        productService.addProductRepo(product);
+        productDao.addProduct(product);
     }
 
     @GetMapping("/add")
@@ -37,11 +41,5 @@ public class MainController {
         model.addAttribute("product", new Product());
         return "addProducts.html";
     }
-
-//    @PostMapping
-//    public String create( @ModelAttribute("product") Product product) {
-//        productService.addProductRepo(product);
-//        return "redirect:/products";
-//    }
 
 }
