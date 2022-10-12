@@ -42,4 +42,8 @@ public class MainController {
         return "addProducts.html";
     }
 
+    @GetMapping("/test")
+    public String test(){
+
+    }
 }

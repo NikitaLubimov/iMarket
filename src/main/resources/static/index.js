@@ -25,6 +25,13 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         })
     };
 
+    $scope.shoppingListUserByProduct = function () {
+        $http.get(contextPath + '/products/shoppingList')
+            .then(function (response) {
+                $scope.shoppingList = response.data;
+            });
+    };
+
     $scope.loadProducts();
 
 });
