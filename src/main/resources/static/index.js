@@ -1,4 +1,4 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
+angular.module('app', []).controller('indexController', function ($scope, $http, $location) {
     const contextPath = 'http://localhost:8080/app';
 
     $scope.loadProducts = function () {
@@ -25,10 +25,11 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         })
     };
 
-    $scope.shoppingListUserByProduct = function () {
-        $http.get(contextPath + '/products/shoppingList')
+    $scope.shoppingListUserByProduct = function (productId) {
+        $http.get(contextPath + '/products/shoppingList/' + productId)
             .then(function (response) {
                 $scope.shoppingList = response.data;
+                $location.path('shoppingList.html')
             });
     };
 

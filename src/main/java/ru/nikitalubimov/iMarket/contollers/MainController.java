@@ -1,12 +1,12 @@
 package ru.nikitalubimov.iMarket.contollers;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.nikitalubimov.iMarket.dao.ProductDaoImpl;
 import ru.nikitalubimov.iMarket.entity.Product;
+import ru.nikitalubimov.iMarket.entity.User;
 import ru.nikitalubimov.iMarket.services.ProductService;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class MainController {
     private ProductDaoImpl productDao;
 
     @GetMapping("/products/all")
-    public List<Product> getAllProductList () {
+    public List<Product> getAllProductList() {
         return productDao.getAllProductList();
     }
 
@@ -42,8 +42,8 @@ public class MainController {
         return "addProducts.html";
     }
 
-    @GetMapping("/test")
-    public String test(){
-
+    @GetMapping("/products/shoppingList/{id}")
+    public List<User> shoppingList(@PathVariable long id) {
+        return productDao.shoppingListProductById(id);
     }
 }

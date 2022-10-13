@@ -6,7 +6,7 @@ import ru.nikitalubimov.iMarket.entity.User;
 
 import java.util.List;
 
-@Component
+
 public interface ProductDao {
 
     public void addProduct(Product product);

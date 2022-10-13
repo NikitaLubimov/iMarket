@@ -1,5 +1,7 @@
 package ru.nikitalubimov.iMarket.entity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class User {
     @Column(name = "firstname")
     private String firstname;
 
-    @ManyToMany
+    @ManyToMany (targetEntity = Product.class)
     @JoinTable (
             name = "users_products",
             joinColumns = @JoinColumn (name = "user_id"),

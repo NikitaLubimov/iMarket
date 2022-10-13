@@ -4,7 +4,9 @@ package ru.nikitalubimov.iMarket.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.nikitalubimov.iMarket.entity.User;
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class Product {
     @Column(name = "cost")
     private int cost;
 
-    @ManyToMany
+    @ManyToMany (targetEntity = ru.nikitalubimov.iMarket.entity.User.class)
     @JoinTable (
             name = "users_products",
             joinColumns = @JoinColumn (name = "product_id"),

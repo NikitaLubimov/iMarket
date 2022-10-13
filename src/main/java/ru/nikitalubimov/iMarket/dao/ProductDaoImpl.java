@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class ProductDaoImpl implements ProductDao {
 
-    @Autowired
+
     SessionFactoryUtils sessionFactoryUtils;
 
     @Override

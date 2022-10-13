@@ -15,5 +15,6 @@
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <mapping class="ru.nikitalubimov.iMarket.entity.Product"/>
+        <mapping class="ru.nikitalubimov.iMarket.entity.User"/>
     </session-factory>
 </hibernate-configuration>
