@@ -13,6 +13,7 @@ import java.util.List;
 public class ProductDaoImpl implements ProductDao {
 
 
+    @Autowired
     SessionFactoryUtils sessionFactoryUtils;
 
     @Override

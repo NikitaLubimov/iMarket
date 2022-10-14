@@ -12,6 +12,7 @@ import java.util.List;
 @Component
 public class UserDaoImpl implements UserDao {
 
+    @Autowired
     SessionFactoryUtils sessionFactoryUtils;
 
     @Override

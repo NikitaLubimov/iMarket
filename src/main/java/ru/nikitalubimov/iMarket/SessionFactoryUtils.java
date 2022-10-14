@@ -12,7 +12,7 @@ import javax.annotation.PreDestroy;
 public class SessionFactoryUtils {
 
     private SessionFactory factory;
-    private Session session;
+
 
     @PostConstruct
     public void init() {
@@ -24,10 +24,7 @@ public class SessionFactoryUtils {
     }
 
     public Session getSession () {
-        if (session == null) {
-            session = factory.getCurrentSession();
-        }
-        return session;
+        return factory.getCurrentSession();
     }
 
     @PreDestroy
