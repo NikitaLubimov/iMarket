@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.nikitalubimov.iMarket.SessionFactoryUtils;
 import ru.nikitalubimov.iMarket.entity.Product;
+import ru.nikitalubimov.iMarket.entity.User;
 
 import java.util.List;
 
 @Component
 public class ProductDaoImpl implements ProductDao {
+
 
     @Autowired
     SessionFactoryUtils sessionFactoryUtils;
@@ -48,9 +50,20 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProductList() {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            List<Product> productList = session.createQuery("select p from Product p").getResultList();
+            List<Product> productList = session.createQuery("select p.id, p.title, p.cost from Product p ").getResultList();
             session.getTransaction().commit();
             return productList;
+        }
+    }
+
+    @Override
+    public List<User> shoppingListProductById(long id) {
+        try (Session session = sessionFactoryUtils.getSession()) {
+            session.beginTransaction();
+            Product product = session.get(Product.class, id);
+            List<User> userProducts= product.getUsers();
+            session.getTransaction().commit();
+            return userProducts;
         }
     }
 }
