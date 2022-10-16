@@ -15,8 +15,6 @@ import java.util.List;
 @RestController
 public class MainController {
 
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private ProductDaoImpl productDao;

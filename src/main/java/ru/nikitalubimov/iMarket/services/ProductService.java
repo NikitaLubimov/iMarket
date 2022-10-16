@@ -2,29 +2,32 @@ package ru.nikitalubimov.iMarket.services;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.nikitalubimov.iMarket.dao.ProductDaoImpl;
+import ru.nikitalubimov.iMarket.dao.UserDaoImpl;
 import ru.nikitalubimov.iMarket.entity.Product;
+import ru.nikitalubimov.iMarket.entity.User;
 import ru.nikitalubimov.iMarket.repo.ProductRepository;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductDaoImpl productDao;
+
+    @Autowired
+    private UserDaoImpl userDao;
 
 
-    public List<Product> getAllProductList() {
-        return productRepository.getAllProduct();
+    public List<User> shoppingListProductById(long id) {
+        return productDao.shoppingListProductById(id);
     }
 
-    public void addProductRepo(Product product) {
-        productRepository.addProduct(product);
-    }
-
-    public void deleteProduct(long id) {
-        productRepository.deleteProductById(id);
+    public List<Product> shoppingListUserById(long id) {
+        return userDao.shoppingListUserById(id);
     }
 }

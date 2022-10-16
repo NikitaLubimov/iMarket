@@ -50,7 +50,7 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProductList() {
         try (Session session = sessionFactoryUtils.getSession()) {
             session.beginTransaction();
-            List<Product> productList = session.createQuery("select p from Product p").getResultList();
+            List<Product> productList = session.createQuery("select p.id, p.title, p.cost from Product p ").getResultList();
             session.getTransaction().commit();
             return productList;
         }
