@@ -4,30 +4,36 @@ package ru.nikitalubimov.iMarket.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.nikitalubimov.iMarket.dao.ProductDaoImpl;
-import ru.nikitalubimov.iMarket.dao.UserDaoImpl;
-import ru.nikitalubimov.iMarket.entity.Product;
-import ru.nikitalubimov.iMarket.entity.User;
-import ru.nikitalubimov.iMarket.repo.ProductRepository;
+import ru.nikitalubimov.iMarket.data.Product;
+import ru.nikitalubimov.iMarket.repositories.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     @Autowired
-    private ProductDaoImpl productDao;
+    private ProductRepository productRepository;
 
-    @Autowired
-    private UserDaoImpl userDao;
-
-
-    public List<User> shoppingListProductById(long id) {
-        return productDao.shoppingListProductById(id);
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 
-    public List<Product> shoppingListUserById(long id) {
-        return userDao.shoppingListUserById(id);
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    public void addProduct (Product product) {
+        productRepository.save(product);
+    }
+
+    public void deleteProductById (long id) {
+        productRepository.deleteById(id);
+    }
+
+    public List<Product> findAllByCostBetween (Integer min, Integer max ) {
+        return productRepository.findAllByCostBetween(min, max);
     }
 }
