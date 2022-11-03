@@ -2,11 +2,9 @@ package ru.nikitalubimov.iMarket.contollers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.nikitalubimov.iMarket.dao.ProductDaoImpl;
-import ru.nikitalubimov.iMarket.entity.Product;
-import ru.nikitalubimov.iMarket.entity.User;
+import ru.nikitalubimov.iMarket.data.Product;
+import ru.nikitalubimov.iMarket.exception.ResourceNotFoundException;
 import ru.nikitalubimov.iMarket.services.ProductService;
 
 import java.util.List;
@@ -15,33 +13,38 @@ import java.util.List;
 @RestController
 public class MainController {
 
-
     @Autowired
-    private ProductDaoImpl productDao;
+    private ProductService productService;
 
     @GetMapping("/products/all")
     public List<Product> getAllProductList() {
-        return productDao.getAllProductList();
+        return productService.findAll();
     }
 
-    @GetMapping("/products/delete/{id}")
-    public void deleteProduct(@PathVariable long id) {
-        productDao.deleteProductById(id);
+    @GetMapping("/products/getProductById/{id}")
+    public Product getProductById(@PathVariable long id) {
+        return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
     }
 
     @RequestMapping(value = "/products/add", method = RequestMethod.POST)
     public void addProduct(@RequestBody Product product) {
-        productDao.addProduct(product);
+        productService.addProduct(product);
     }
 
-    @GetMapping("/add")
-    public String addProduct(Model model) {
-        model.addAttribute("product", new Product());
-        return "addProducts.html";
+
+    @GetMapping("/products/delete/{id}")
+    public void deleteProduct(@PathVariable long id) {
+        productService.deleteProductById(id);
     }
 
-    @GetMapping("/products/shoppingList/{id}")
-    public List<User> shoppingList(@PathVariable long id) {
-        return productDao.shoppingListProductById(id);
+
+    @GetMapping("/products/cost_between")
+    public List<Product> findAllByCostBetween (@RequestParam (defaultValue = "0") Integer min , @RequestParam (defaultValue = "10000") Integer max) {
+        return productService.findAllByCostBetween(min, max);
     }
+
+//    @GetMapping("/products/shoppingList/{id}")
+//    public List<User> shoppingList(@PathVariable long id) {
+//
+//    }
 }
