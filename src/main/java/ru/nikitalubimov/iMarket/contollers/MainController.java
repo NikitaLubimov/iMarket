@@ -38,8 +38,8 @@ public class MainController {
     }
 
 
-    @GetMapping("/products/cost_between")
-    public List<Product> findAllByCostBetween (@RequestParam (defaultValue = "0") Integer min , @RequestParam (defaultValue = "10000") Integer max) {
+    @GetMapping("/products/costBetween")
+    public List<Product> findAllByCostBetween (@RequestParam (defaultValue = "0") Integer min , @RequestParam (defaultValue = "0") Integer max) {
         return productService.findAllByCostBetween(min, max);
     }
 

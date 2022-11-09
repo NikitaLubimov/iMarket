@@ -12,15 +12,28 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         $http.get(contextPath + '/products/delete/' + productId)
             .then(function () {
                 $scope.loadProducts();
-        });
+            });
     };
 
     $scope.addProduct = function (product) {
         $http.post(contextPath + '/products/add', product).success(function () {
-           $scope.product.title = '';
-           $scope.product.cost = '';
-        }).then(function (){
+            $scope.product.title = '';
+            $scope.product.cost = '';
+        }).then(function () {
             $scope.loadProducts();
+        })
+    };
+
+    $scope.costBetween = function () {
+        $http({
+            uri: contextPath + '/products/costBetween',
+            method: 'get',
+            params: {
+                min: $scope.costBetweenAdd.min,
+                max: $scope.costBetweenAdd.max
+            }
+        }).then(function (response) {
+            $scope.productsList = response.data;
         })
     };
 

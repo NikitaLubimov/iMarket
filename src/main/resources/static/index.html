@@ -11,7 +11,16 @@
 </head>
     <body>
     <div class="container" ng-controller= "indexController">
-        <h1></h1>
+        <br>
+        <h1>Фильтр</h1>
+        <form novalidate ng-submit="costBetween">
+            <input class="form-control" type="number" placeholder="Min" ng-model="costBetweenAdd.min">
+            <br>
+            <input class="form-control" type="number" placeholder="Max" ng-model="costBetweenAdd.max">
+            <br>
+            <button type="submit" class="btn btn-primary">Отсортировать по цене</button>
+        </form>
+        <br>
         <table class="table">
             <thead>
                 <tr>
@@ -25,7 +34,7 @@
                 <tr ng-repeat="p in productsList">
                     <th>{{p.id}}</th>
                     <th>{{p.title}}</th>
-                    <th>{{p.cost}}</th>
+                    <th>{{p.cost}}</th>costBetween
                     <th>
                         <button class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
 <!--                        <button class="btn btn-primary" ng-click="shoppingListUserByProduct(p.id)">Список покупателей</button>-->

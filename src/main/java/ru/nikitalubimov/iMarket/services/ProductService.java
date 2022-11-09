@@ -34,6 +34,13 @@ public class ProductService {
     }
 
     public List<Product> findAllByCostBetween (Integer min, Integer max ) {
-        return productRepository.findAllByCostBetween(min, max);
+        if (min == 0 && max == 0) {
+            return productRepository.findAll();
+        }
+        if (min < max) {
+            return productRepository.findAllByCostBetween(min,max);
+        } else {
+            return productRepository.findAllByCostBefore(max);
+        }
     }
 }
