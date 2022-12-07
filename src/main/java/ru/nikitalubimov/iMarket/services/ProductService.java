@@ -2,67 +2,63 @@ package ru.nikitalubimov.iMarket.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.nikitalubimov.iMarket.converters.ProductMapper;
 import ru.nikitalubimov.iMarket.data.Product;
 import ru.nikitalubimov.iMarket.dto.ProductDto;
 import ru.nikitalubimov.iMarket.repositories.ProductRepository;
+import ru.nikitalubimov.iMarket.repositories.specifications.ProductSpecification;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+    private final ProductMapper MAPPER;
 
-    public List<ProductDto> findAll() {
-        List<Product> productRepositoryAll = productRepository.findAll();
-        List<ProductDto> productDtoList = new ArrayList<>();
-        for (Product p:productRepositoryAll) {
-            productDtoList.add(new ProductDto(p));
+
+    public Page<ProductDto> findAll(Integer minCost, Integer maxCost, Integer page, String titlePart) {
+        log.info("ProductService - > findAll");
+        Specification<Product> specification = Specification.where(null);
+
+        if (minCost != null) {
+            specification = specification.and(ProductSpecification.costGreaterOrEqualsThan(minCost));
         }
-        return productDtoList;
+        if (maxCost != null) {
+            specification = specification.and(ProductSpecification.costLessThanOrEqualTo(maxCost));
+        }
+        if (titlePart != null) {
+            specification = specification.and(ProductSpecification.titleLike(titlePart));
+        }
+        return productRepository.findAll(specification, PageRequest.of(page - 1, 5)).map(MAPPER::toDto);
+
     }
 
+    // допилить
     public Optional<ProductDto> findById(Long id) {
-        return Optional.of(productRepository.findById(id).map(product -> new ProductDto(product)).orElseThrow());
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        return null;
     }
 
-    public ProductDto addProduct (Product product) {
-        Product product1 = productRepository.save(product);
-        ProductDto productDto = new ProductDto(product1);
-        return productDto;
+    public ProductDto addProduct(Product product) {
+        log.info("ProductService - > addProduct");
+        productRepository.save(product);
+        return MAPPER.toDto(product);
     }
 
-    public void deleteProductById (long id) {
+    public void deleteProductById(long id) {
+        log.info("ProductService - > deleteProductById");
         productRepository.deleteById(id);
     }
 
-    public List<ProductDto> findAllByCostBetween (Integer min, Integer max ) {
-        List<ProductDto> productDtoList = new ArrayList<>();
-        if (min == 0 && max == 0) {
-            List<Product> productRepositoryAll = productRepository.findAll();
-            for (Product p: productRepositoryAll) {
-                productDtoList.add(new ProductDto(p));
-            }
-            return productDtoList;
-        }
-        if (min < max) {
-            List<Product> productRepositoryBetween = productRepository.findAllByCostBetween(min, max);
-            for (Product p: productRepositoryBetween) {
-                productDtoList.add(new ProductDto(p));
-            }
-            return productDtoList;
-        } else {
-            List<Product> productRepositoryCostBefore = productRepository.findAllByCostBefore(max);
-            for (Product p: productRepositoryCostBefore) {
-                productDtoList.add(new ProductDto(p));
-            }
-            return productDtoList;
-        }
-    }
 }
+
