@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import ru.nikitalubimov.iMarket.converters.ProductMapper;
 import ru.nikitalubimov.iMarket.data.Product;
 import ru.nikitalubimov.iMarket.dto.ProductDto;
 import ru.nikitalubimov.iMarket.exception.ResourceNotFoundException;
@@ -19,12 +20,13 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductMapper MAPPER;
 
     @GetMapping()
     public Page<ProductDto> getAllProductList(
             @RequestParam(name = "p", defaultValue = "1") Integer page,
-            @RequestParam(name = "min_cost", required = false) Integer minCost,
-            @RequestParam(name = "max_cost", required = false) Integer maxCost,
+            @RequestParam(name = "min_price", required = false) Integer minCost,
+            @RequestParam(name = "max_price", required = false) Integer maxCost,
             @RequestParam(name = "title_part", required = false) String titlePart
     ) {
         if (page < 1 ) {
@@ -34,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductDto getProductById(@PathVariable long id) {
+    public Product getProductById(@PathVariable long id) {
         return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
     }
 

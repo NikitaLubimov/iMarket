@@ -43,10 +43,8 @@ public class ProductService {
 
     }
 
-    // допилить
-    public Optional<ProductDto> findById(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        return null;
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
     public ProductDto addProduct(Product product) {
