@@ -5,6 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ru.nikitalubimov.iMarket.data.Product;
+import ru.nikitalubimov.iMarket.dto.CartItem;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -35,7 +35,7 @@ public class ProductController {
         return productService.findAll(minCost, maxCost, page, titlePart);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/add/{id}")
     public Product getProductById(@PathVariable long id) {
         return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
     }

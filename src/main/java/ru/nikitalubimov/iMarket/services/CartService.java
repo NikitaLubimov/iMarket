@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nikitalubimov.iMarket.converters.ProductMapper;
 import ru.nikitalubimov.iMarket.data.Product;
+import ru.nikitalubimov.iMarket.dto.Cart;
+import ru.nikitalubimov.iMarket.dto.CartItem;
 import ru.nikitalubimov.iMarket.dto.ProductDto;
 import ru.nikitalubimov.iMarket.exception.ResourceNotFoundException;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,26 +18,27 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService {
 
+    private Cart tempCart;
     private final ProductService productService;
-    private final ProductMapper MAPPER;
 
-    @Autowired
-    private List<Product> productList;
-    private static Integer count;
-
-
-    public List<Product> getProductList() {
-        return productList;
+    @PostConstruct
+    private void init() {
+        tempCart = new Cart();
     }
 
-    public void addProductCart(Long id) {
-        productList.add(productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Продукт с id: " + id + " не найден.")));
-        count++;
+    public Cart getCurrentCart() {
+        return tempCart;
     }
 
-    public void deleteProductCart(Long id) {
-        productList.removeIf(product -> product.getId() == id);
-        count--;
+    public void add(Long productId) {
+        Product product = productService.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product for cart not found, id: " + productId));
+        tempCart.add(product);
     }
+
+
+//    public void deleteProductCart(Long id) {
+//        productList.removeIf(product -> product.getId() == id);
+//        count--;
+//    }
 
 }

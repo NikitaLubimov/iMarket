@@ -63,6 +63,8 @@
         <button class="btn btn-outline-warning btn-sm" style="width: 100%;" type="submit">Применить</button>
     </form>
 
+    <p></p>
+
     <h3>Каталог товаров</h3>
     <table class="table table-hover">
         <tr>
@@ -79,7 +81,7 @@
                 <button class="btn btn-outline-warning btn-sm" ng-click="ProductDelete(p.id)">Удалить</button>
             </td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="CartProductAdd(p.id)">Добавить</button>
+                <button class="btn btn-outline-warning btn-sm" ng-click="CartProductAdd(p.id)">Добавить в корзину</button>
             </td>
         </tr>
         </tbody>
@@ -87,7 +89,7 @@
 
     <form class="container">
         <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control"  id="title" ng-model="product.title" required="required">
+        <input type="text" class="form-control" id="title" ng-model="product.title" required="required">
         <br>
         <label for="cost" class="form-label">Cost</label>
         <input type="number" class="form-control" id="cost" ng-model="product.cost" required="required">
@@ -95,23 +97,29 @@
         <a class="btn btn-primary" href="index.html" role="button" ng-click="addProduct(product)">Сохранить</a>
     </form>
 
+    <p></p>
+
     <h3>Корзина</h3>
     <table class="table table-hover">
         <tr>
-            <td>ID</td>
             <td>Название</td>
-            <td>Цена</td>
+            <td>Колличество</td>
+            <td>Общая сумма</td>
         </tr>
         <tbody>
-        <tr ng-repeat="p in cartList">
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
-            <td>{{p.price}}</td>
+        <tr ng-repeat="item in cart.cartItemList">
+            <td>{{item.title}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + p.price}}</td>
+        </tr>
+        <tr>
+            <td>Итого</td>
+            <td></td>
+            <td>{{cart.totalPrice}}</td>
         </tr>
         </tbody>
     </table>
 
 </div>
-
 </body>
 </html>

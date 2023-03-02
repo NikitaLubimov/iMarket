@@ -68,26 +68,26 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         }
     };
 
-    $scope.CartProductList = function () {
-        $http.get(contextPath + "/cart").then(function (response){
-            $scope.cartList = response.data;
+    $scope.loadCart = function () {
+        $http.get(contextPath + "/cart").then(function (response) {
+            $scope.cart = response.data;
         })
     };
 
     $scope.CartProductAdd = function (productId) {
-        $http.post(contextPath + "/cart/add/{productId}").then(function (){
-            $scope.CartProductList();
+        $http.get(contextPath + "/cart/add/" + productId).then(function () {
+            $scope.loadCart;
         })
     };
 
-    $scope.ProductDelete = function (productId) {
-        $http.delete(contextPath + "/delete/{productId}").then(function (){
-            $scope.loadProducts();
-        })
-    };
+    // $scope.ProductDelete = function (productId) {
+    //     $http.delete(contextPath + "/delete/" + productId).then(function (){
+    //         $scope.loadProducts();
+    //     })
+    // };
 
     $scope.loadProducts();
-    $scope.CartProductList();
+    $scope.loadCart;
 
 
 });
