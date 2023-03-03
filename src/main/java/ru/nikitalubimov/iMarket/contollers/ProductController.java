@@ -35,7 +35,7 @@ public class ProductController {
         return productService.findAll(minCost, maxCost, page, titlePart);
     }
 
-    @GetMapping("/add/{id}")
+    @GetMapping("/getProduct/{id}")
     public Product getProductById(@PathVariable long id) {
         return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
     }
@@ -45,7 +45,7 @@ public class ProductController {
         productService.addProduct(product);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable long id) {
         productService.deleteProductById(id);
     }

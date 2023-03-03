@@ -22,7 +22,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
 
 
     $scope.addProduct = function (product) {
-        $http.post(contextPath + '/products/add', product).success(function () {
+        $http.post(contextPath + '/products', product).success(function () {
             $scope.product.title = '';
             $scope.product.cost = '';
         }).then(function () {
@@ -69,25 +69,49 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.loadCart = function () {
-        $http.get(contextPath + "/cart").then(function (response) {
+        $http.get(contextPath + '/cart').then(function (response) {
             $scope.cart = response.data;
         })
     };
 
     $scope.CartProductAdd = function (productId) {
-        $http.get(contextPath + "/cart/add/" + productId).then(function () {
-            $scope.loadCart;
+        $http.post(contextPath + '/cart/' + productId).then(function () {
+            $scope.loadCart();
         })
     };
 
-    // $scope.ProductDelete = function (productId) {
-    //     $http.delete(contextPath + "/delete/" + productId).then(function (){
-    //         $scope.loadProducts();
-    //     })
-    // };
+    $scope.ProductDelete = function (productId) {
+        $http.delete(contextPath + "/products/" + productId).then(function () {
+            $scope.loadProducts();
+        })
+    };
+
+    $scope.ChangeQuantityPlus = function (productId) {
+        $http.get(contextPath + '/cart/changePlus/' + productId).then(function () {
+            $scope.loadCart();
+        })
+    };
+
+    $scope.ChangeQuantityMinus = function (productId) {
+        $http.get(contextPath + '/cart/changeMinus/' + productId).then(function () {
+            $scope.loadCart();
+        })
+    };
+
+    $scope.deleteItemCart = function (productId) {
+        $http.delete(contextPath + '/cart/' + productId).then(function () {
+            $scope.loadCart();
+        })
+    };
+
+
+    $scope.clearCart = function (productId) {
+        $http.delete(contextPath + '/cart/clearCart').then(function () {
+            $scope.loadCart();
+        })
+    };
 
     $scope.loadProducts();
-    $scope.loadCart;
-
+    $scope.loadCart();
 
 });

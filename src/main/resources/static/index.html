@@ -104,22 +104,34 @@
         <tr>
             <td>Название</td>
             <td>Колличество</td>
-            <td>Общая сумма</td>
+            <td>Ценна</td>
+            <td>Сумма</td>
+            <td>
+                <button class="btn btn-outline-warning btn-sm" ng-click="clearCart()">Очистить корзину</button>
+            </td>
         </tr>
         <tbody>
         <tr ng-repeat="item in cart.cartItemList">
-            <td>{{item.title}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.pricePerProduct + ' x ' + item.quantity + ' = ' + p.price}}</td>
+            <td>{{item.productTitle}}</td>
+            <td>
+                <button class="btn btn-outline-warning btn-sm" ng-click="ChangeQuantityMinus(item.productId)">-</button>
+                {{item.quantity}}
+                <button class="btn btn-outline-warning btn-sm" ng-click="ChangeQuantityPlus(item.productId)">+</button>
+            </td>
+            <td>{{item.pricePerProduct}}</td>
+            <td>{{item.price}}</td>
+            <td>
+                <button class="btn btn-outline-warning btn-sm" ng-click="deleteItemCart(item.productId)">Удалить</button>
+            </td>
         </tr>
         <tr>
             <td>Итого</td>
+            <td></td>
             <td></td>
             <td>{{cart.totalPrice}}</td>
         </tr>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

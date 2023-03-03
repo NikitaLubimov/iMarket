@@ -35,10 +35,20 @@ public class CartService {
         tempCart.add(product);
     }
 
+    public void changeQuantityPlus (Long id) {
+       tempCart.changeQuantityPlus(id);
+    }
 
-//    public void deleteProductCart(Long id) {
-//        productList.removeIf(product -> product.getId() == id);
-//        count--;
-//    }
+    public void changeQuantityMinus (Long id) {
+        tempCart.changeQuantityMinus(id);
+    }
 
+
+    public void deleteItemCart(Long id) {
+        tempCart.deleteItem(id);
+    }
+
+    public void clearCart() {
+        tempCart.clearCart();
+    }
 }

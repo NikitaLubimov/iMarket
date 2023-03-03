@@ -16,16 +16,23 @@ public class Cart {
 
     public Cart() {
         cartItemList = new ArrayList<>();
-        cartItemList.add(new CartItem(1l,"test",1,1,1));
     }
 
-    private List<CartItem> getCartItemList() {
+    public List<CartItem> getCartItemList() {
         return Collections.unmodifiableList(cartItemList);
     }
 
-    // TODO: ДЗ №1
     public void add(Product product) {
+        for (CartItem item : cartItemList) {
+            if (product.getId() == item.getProductId()) {
+                item.setQuantity(item.getQuantity() + 1);
+                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                recalculate();
+                return;
+            }
+        }
         cartItemList.add(new CartItem(product.getId(), product.getTitle(), 1, product.getCost(), product.getCost()));
+        recalculate();
     }
 
     public void recalculate() {
@@ -33,5 +40,42 @@ public class Cart {
         for (CartItem cartItem : cartItemList) {
             totalPrice += cartItem.getPrice();
         }
+    }
+
+    public void changeQuantityPlus (Long id) {
+        for (CartItem item : cartItemList) {
+            if (item.getProductId().equals(id)) {
+                item.setQuantity(item.getQuantity() + 1);
+                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                recalculate();
+                return;
+            }
+        }
+    }
+
+    public void changeQuantityMinus (Long id) {
+        for (CartItem item : cartItemList) {
+            if (item.getProductId().equals(id) & item.getQuantity() > 0) {
+                item.setQuantity(item.getQuantity() - 1);
+                if (item.getQuantity() == 0) {
+                    deleteItem(item.getProductId());
+                    recalculate();
+                    return;
+                }
+                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                recalculate();
+                return;
+            }
+        }
+    }
+
+    public void deleteItem (Long id) {
+        cartItemList.removeIf(cartItem -> cartItem.getProductId().equals(id));
+        recalculate();
+    }
+
+    public void clearCart() {
+        cartItemList.clear();
+        recalculate();
     }
 }
