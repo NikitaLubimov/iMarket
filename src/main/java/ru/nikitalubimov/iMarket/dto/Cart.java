@@ -58,7 +58,7 @@ public class Cart {
             if (item.getProductId().equals(id) & item.getQuantity() > 0) {
                 item.setQuantity(item.getQuantity() - 1);
                 if (item.getQuantity() == 0) {
-                    deleteItem(item.getProductId());
+                    cartItemList.remove(item);
                     recalculate();
                     return;
                 }
