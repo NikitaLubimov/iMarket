@@ -31,7 +31,7 @@
                             <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
                                    aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
 
-                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
+                            <button id="navLoginSubmit" class="btn btn-outline-success btn-sm"
                                     style="margin-left: 10px;" type="submit">Войти
                             </button>
                         </div>
@@ -78,10 +78,11 @@
             <td>{{p.title}}</td>
             <td>{{p.cost}}</td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="ProductDelete(p.id)">Удалить</button>
+                <button class="btn btn-outline-danger btn-sm" ng-click="ProductDelete(p.id)">Удалить</button>
             </td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="CartProductAdd(p.id)">Добавить в корзину</button>
+                <button class="btn btn-outline-primary btn-sm" ng-click="CartProductAdd(p.id)">Добавить в корзину
+                </button>
             </td>
         </tr>
         </tbody>
@@ -94,7 +95,7 @@
         <label for="cost" class="form-label">Cost</label>
         <input type="number" class="form-control" id="cost" ng-model="product.cost" required="required">
         <br>
-        <a class="btn btn-primary" href="index.html" role="button" ng-click="addProduct(product)">Сохранить</a>
+        <a class="btn btn-outline-success" href="index.html" role="button" ng-click="addProduct(product)">Сохранить</a>
     </form>
 
     <p></p>
@@ -107,21 +108,23 @@
             <td>Ценна</td>
             <td>Сумма</td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="clearCart()">Очистить корзину</button>
+                <button class="btn btn-outline-danger btn-sm" ng-click="clearCart()">Очистить корзину</button>
             </td>
         </tr>
         <tbody>
         <tr ng-repeat="item in cart.cartItemList">
             <td>{{item.productTitle}}</td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="ChangeQuantityMinus(item.productId)">-</button>
+                <button class="btn btn-outline-secondary btn-sm" ng-click="ChangeQuantityMinus(item.productId)">-
+                </button>
                 {{item.quantity}}
-                <button class="btn btn-outline-warning btn-sm" ng-click="ChangeQuantityPlus(item.productId)">+</button>
+                <button class="btn btn-outline-secondary btn-sm" ng-click="ChangeQuantityPlus(item.productId)">+
+                </button>
             </td>
             <td>{{item.pricePerProduct}}</td>
             <td>{{item.price}}</td>
             <td>
-                <button class="btn btn-outline-warning btn-sm" ng-click="deleteItemCart(item.productId)">Удалить</button>
+                <button class="btn btn-outline-danger btn-sm" ng-click="deleteItemCart(item.productId)">Удалить</button>
             </td>
         </tr>
         <tr>
@@ -129,9 +132,40 @@
             <td></td>
             <td></td>
             <td>{{cart.totalPrice}}</td>
+            <td>
+                                <button class="btn btn-outline-success btn-sm" ng-click="createdOrder()">Оформить заказ</button>
+<!--                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Оформить заказ</button>-->
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                <form>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="recipient-name" class="col-form-label">Введите адрес</label>-->
+<!--                        <input type="text" class="form-control" ng-model="userDetail.address" id="recipient-name">-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="message-text" class="col-form-label">Ваш Email</label>-->
+<!--                        <input type="text" class="form-control" ng-model="userDetail.email" id="message-text">-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>-->
+<!--                <button type="button" class="btn btn-primary" ng-click="createdOrder(user.address, user.email)" >Оформить заказ</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 </body>
 </html>

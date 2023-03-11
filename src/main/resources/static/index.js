@@ -39,6 +39,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
 
                     $scope.user.username = null;
                     $scope.user.password = null;
+                    $scope.loadProducts();
                 }
             }, function errorCallback(response) {
 
@@ -110,6 +111,18 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
             $scope.loadCart();
         })
     };
+
+    $scope.createdOrder = function () {
+        $http.post(contextPath + '/order') .then(function () {
+            $scope.clearCart();
+        })
+    };
+
+    // $scope.createdOrder = function (address, email) {
+    //     $http.post(contextPath + '/order'+ address + '/' + email) .then(function () {
+    //         $scope.clearCart();
+    //     })
+    // };
 
     $scope.loadProducts();
     $scope.loadCart();
