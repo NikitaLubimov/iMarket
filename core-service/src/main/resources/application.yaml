@@ -21,3 +21,6 @@ spring:
       path: /h2
       settings:
         web-allow-others: false
+
+url:
+    pathCart: http://localhost:8090/app-carts/api/v1
