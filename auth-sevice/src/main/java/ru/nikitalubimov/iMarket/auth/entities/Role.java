@@ -1,8 +1,9 @@
-package ru.nikitalubimov.iMarket.data;
+package ru.nikitalubimov.iMarket.auth.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

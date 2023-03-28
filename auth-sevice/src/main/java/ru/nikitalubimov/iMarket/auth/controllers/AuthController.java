@@ -1,4 +1,4 @@
-package ru.nikitalubimov.iMarket.contollers;
+package ru.nikitalubimov.iMarket.auth.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.nikitalubimov.iMarket.api.AppError;
 import ru.nikitalubimov.iMarket.api.JwtRequest;
 import ru.nikitalubimov.iMarket.api.JwtResponse;
-import ru.nikitalubimov.iMarket.services.UserService;
-import ru.nikitalubimov.iMarket.utils.JwtTokenUtil;
+import ru.nikitalubimov.iMarket.auth.services.UserService;
+import ru.nikitalubimov.iMarket.auth.utils.JwtTokenUtil;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthContoller {
-
+public class AuthController {
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;

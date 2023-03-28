@@ -1,26 +1,21 @@
-package ru.nikitalubimov.iMarket.data;
+package ru.nikitalubimov.iMarket.auth.entities;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-
 @Entity
-@Table (name = "users")
-@NoArgsConstructor
 @Data
-@ToString
+@Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "username")
     private String username;

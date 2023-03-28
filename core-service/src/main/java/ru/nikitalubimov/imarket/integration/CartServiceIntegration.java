@@ -1,20 +1,30 @@
 package ru.nikitalubimov.iMarket.integration;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.nikitalubimov.iMarket.api.CartDto;
-import java.util.Optional;
+
 
 @Component
 @RequiredArgsConstructor
 public class CartServiceIntegration {
-    private final RestTemplate restTemplate;
-    @Value(value = "${url.pathCart}")
-    private String contextPathCartsService;
 
-    public Optional<CartDto> getCurrentCart(){
-        return Optional.ofNullable(restTemplate.getForObject(contextPathCartsService + "/cart", CartDto.class));
+    private final WebClient cartSeviceWebClient;
+
+    public CartDto getCurrentCart() {
+        return cartSeviceWebClient.get()
+                .uri("/cart")
+                .retrieve()
+                .bodyToMono(CartDto.class)
+                .block();
+    }
+
+    public void cartClear() {
+        cartSeviceWebClient.delete()
+                .uri("/clearCart")
+                .retrieve()
+                .toBodilessEntity()
+                .block();
     }
 }

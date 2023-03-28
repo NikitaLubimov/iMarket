@@ -23,9 +23,8 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "user_name")
+    private String userName;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> items;

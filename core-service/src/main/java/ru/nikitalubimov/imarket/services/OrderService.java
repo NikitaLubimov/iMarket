@@ -7,11 +7,9 @@ import ru.nikitalubimov.iMarket.api.CartDto;
 import ru.nikitalubimov.iMarket.api.ResourceNotFoundException;
 import ru.nikitalubimov.iMarket.data.Order;
 import ru.nikitalubimov.iMarket.data.OrderItem;
-import ru.nikitalubimov.iMarket.data.User;
 import ru.nikitalubimov.iMarket.integration.CartServiceIntegration;
 import ru.nikitalubimov.iMarket.repositories.OrderItemRepository;
 import ru.nikitalubimov.iMarket.repositories.OrderRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +22,13 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     @Transactional
-    public void createdOrder(User user) {
-        CartDto cart = cartServiceIntegration.getCurrentCart().orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+    public void createdOrder(String userName) {
+        CartDto cartDto = cartServiceIntegration.getCurrentCart();
         Order order = new Order();
-        order.setUser(user);
+        order.setUserName(userName);
         orderRepository.save(order);
 
-        List<OrderItem> orderItems = cart.getCartItemList().stream().map(cartItem -> new OrderItem(
+        List<OrderItem> orderItems = cartDto.getCartItemList().stream().map(cartItem -> new OrderItem(
                 productService.findById(cartItem.getProductId()).orElseThrow(()-> new ResourceNotFoundException("Product not found (method: createdOrder)")),
                 order,
                 cartItem.getQuantity(),
@@ -40,7 +38,7 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         order.setItems(orderItems);
-        order.setTotalPrice(cart.getTotalPrice());
+        order.setTotalPrice(cartDto.getTotalPrice());
         orderRepository.save(order);
     }
 }

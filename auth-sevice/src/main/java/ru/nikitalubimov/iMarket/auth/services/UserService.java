@@ -1,4 +1,4 @@
-package ru.nikitalubimov.iMarket.services;
+package ru.nikitalubimov.iMarket.auth.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,9 +8,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.nikitalubimov.iMarket.data.Role;
-import ru.nikitalubimov.iMarket.data.User;
-import ru.nikitalubimov.iMarket.repositories.UserRepository;
+import ru.nikitalubimov.iMarket.auth.entities.User;
+import ru.nikitalubimov.iMarket.auth.entities.Role;
+import ru.nikitalubimov.iMarket.auth.repositories.UserRepository;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;

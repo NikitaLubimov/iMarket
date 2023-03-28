@@ -10,7 +10,6 @@ import ru.nikitalubimov.iMarket.carts.services.CartService;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CartController {
 
     private final CartService cartService;

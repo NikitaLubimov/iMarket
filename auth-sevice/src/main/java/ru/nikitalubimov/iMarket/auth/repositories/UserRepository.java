@@ -1,8 +1,9 @@
-package ru.nikitalubimov.iMarket.repositories;
+package ru.nikitalubimov.iMarket.auth.repositories;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.nikitalubimov.iMarket.data.User;
+import ru.nikitalubimov.iMarket.auth.entities.User;
 
 import java.util.Optional;
 

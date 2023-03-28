@@ -4,8 +4,8 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
     }
 
-    const contextPathCoreService = 'http://localhost:8080/app/api/v1';
-    const contextPathCartsService = 'http://localhost:8090/app-carts/api/v1';
+    const contextPathCoreService = 'http://localhost:5555/core/api/v1';
+    const contextPathCartsService = 'http://localhost:5555/cart/api/v1';
 
     $scope.loadProducts = function (pageIndex = 1) {
         $http({
@@ -32,7 +32,7 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
     };
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8080/app/auth', $scope.user)
+        $http.post('http://localhost:5555/auth/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
