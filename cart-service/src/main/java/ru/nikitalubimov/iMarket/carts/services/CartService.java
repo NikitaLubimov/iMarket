@@ -3,7 +3,6 @@ package ru.nikitalubimov.iMarket.carts.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nikitalubimov.iMarket.api.ProductDto;
-import ru.nikitalubimov.iMarket.api.ResourceNotFoundException;
 import ru.nikitalubimov.iMarket.carts.integrations.ProductServiceIntegration;
 import ru.nikitalubimov.iMarket.carts.model.Cart;
 
