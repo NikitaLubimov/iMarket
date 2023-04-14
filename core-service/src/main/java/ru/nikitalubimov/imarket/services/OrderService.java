@@ -10,6 +10,8 @@ import ru.nikitalubimov.iMarket.data.OrderItem;
 import ru.nikitalubimov.iMarket.integration.CartServiceIntegration;
 import ru.nikitalubimov.iMarket.repositories.OrderItemRepository;
 import ru.nikitalubimov.iMarket.repositories.OrderRepository;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +24,11 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     @Transactional
-    public void createdOrder(String userName) {
+    public Order createdOrder(String userName) {
         CartDto cartDto = cartServiceIntegration.getCurrentCart();
         Order order = new Order();
         order.setUserName(userName);
+
         orderRepository.save(order);
 
         List<OrderItem> orderItems = cartDto.getCartItemList().stream().map(cartItem -> new OrderItem(
@@ -40,5 +43,6 @@ public class OrderService {
         order.setItems(orderItems);
         order.setTotalPrice(cartDto.getTotalPrice());
         orderRepository.save(order);
+        return order;
     }
 }

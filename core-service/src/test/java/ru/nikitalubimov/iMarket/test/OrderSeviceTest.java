@@ -15,6 +15,8 @@ import ru.nikitalubimov.iMarket.repositories.OrderItemRepository;
 import ru.nikitalubimov.iMarket.repositories.OrderRepository;
 import ru.nikitalubimov.iMarket.services.OrderService;
 import ru.nikitalubimov.iMarket.services.ProductService;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +37,15 @@ public class OrderSeviceTest {
     @Test
     public void createOrderTest() {
         CartDto cartDto = new CartDto();
-        CartItemDto cartItemDto1 = new CartItemDto(51L,"milk",2,100,200);
+        CartItemDto cartItemDto1 = new CartItemDto(51L,"milk",2,BigDecimal.valueOf(100),BigDecimal.valueOf(200));
         cartDto.setCartItemList(List.of(cartItemDto1));
-        cartDto.setTotalPrice(200);
+        cartDto.setTotalPrice(BigDecimal.valueOf(200));
         Mockito.doReturn(cartDto).when(cartServiceIntegration).getCurrentCart();
 
-        Product product = new Product(51L,"milk",100);
+        Product product = new Product(51L,"milk",BigDecimal.valueOf(100));
         Mockito.doReturn(Optional.of(product)).when(productService).findById(51L);
 
         Order order = orderService.createdOrder("bob");
-        Assertions.assertEquals(order.getTotalPrice(),200);
+        Assertions.assertEquals(order.getTotalPrice(),BigDecimal.valueOf(200));
     }
 }

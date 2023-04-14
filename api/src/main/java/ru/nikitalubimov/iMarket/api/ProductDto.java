@@ -1,13 +1,15 @@
 package ru.nikitalubimov.iMarket.api;
 
 
+import java.math.BigDecimal;
+
 public class ProductDto {
 
     private Long id;
     private String title;
-    private int cost;
+    private BigDecimal cost;
 
-    public ProductDto(Long id, String title, int cost) {
+    public ProductDto(Long id, String title, BigDecimal cost) {
         this.id = id;
         this.title = title;
         this.cost = cost;
@@ -32,11 +34,11 @@ public class ProductDto {
         this.title = title;
     }
 
-    public int getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 }

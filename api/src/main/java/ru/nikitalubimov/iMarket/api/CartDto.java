@@ -1,5 +1,6 @@
 package ru.nikitalubimov.iMarket.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public class CartDto {
 
     private List<CartItemDto> cartItemList;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     public List<CartItemDto> getCartItemList() {
         return cartItemList;
@@ -17,11 +18,11 @@ public class CartDto {
         this.cartItemList = cartItemList;
     }
 
-    public int getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 }

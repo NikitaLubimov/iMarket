@@ -3,6 +3,7 @@ package ru.nikitalubimov.iMarket.carts.model;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import ru.nikitalubimov.iMarket.api.ProductDto;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Cart {
 
     private List<CartItem> cartItemList;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     public Cart() {
         cartItemList = new ArrayList<>();
@@ -26,7 +27,7 @@ public class Cart {
         for (CartItem item : cartItemList) {
             if (product.getId() == item.getProductId()) {
                 item.setQuantity(item.getQuantity() + 1);
-                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                item.setPrice(item.getPricePerProduct().multiply(BigDecimal.valueOf(item.getQuantity())));
                 recalculate();
                 return;
             }
@@ -36,9 +37,9 @@ public class Cart {
     }
 
     public void recalculate() {
-        totalPrice = 0;
+        totalPrice = BigDecimal.ZERO;
         for (CartItem cartItem : cartItemList) {
-            totalPrice += cartItem.getPrice();
+            totalPrice = totalPrice.add(cartItem.getPrice());
         }
     }
 
@@ -46,7 +47,7 @@ public class Cart {
         for (CartItem item : cartItemList) {
             if (item.getProductId().equals(id)) {
                 item.setQuantity(item.getQuantity() + 1);
-                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                item.setPrice(item.getPricePerProduct().multiply(BigDecimal.valueOf(item.getQuantity())));
                 recalculate();
                 return;
             }
@@ -62,7 +63,7 @@ public class Cart {
                     recalculate();
                     return;
                 }
-                item.setPrice(item.getPricePerProduct() * item.getQuantity());
+                item.setPrice(item.getPricePerProduct().multiply(BigDecimal.valueOf(item.getQuantity())));
                 recalculate();
                 return;
             }
