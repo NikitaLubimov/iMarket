@@ -5,18 +5,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.nikitalubimov.iMarket.api.ProductDto;
 import ru.nikitalubimov.iMarket.api.ResourceNotFoundException;
+import ru.nikitalubimov.iMarket.api.StringResponse;
 import ru.nikitalubimov.iMarket.converters.ProductMapper;
 import ru.nikitalubimov.iMarket.data.Product;
 import ru.nikitalubimov.iMarket.services.ProductService;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper MAPPER;
+
+    @GetMapping("/generate_uuid")
+    public StringResponse generateUUID() {
+        return new StringResponse(UUID.randomUUID().toString());
+    }
 
     @GetMapping()
     public Page<ProductDto> getAllProductList(

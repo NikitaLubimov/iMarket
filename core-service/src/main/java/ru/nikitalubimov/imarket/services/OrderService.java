@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.nikitalubimov.iMarket.api.CartDto;
+import ru.nikitalubimov.iMarket.api.OrderDto;
 import ru.nikitalubimov.iMarket.api.ResourceNotFoundException;
+import ru.nikitalubimov.iMarket.converters.OrderConverter;
 import ru.nikitalubimov.iMarket.data.Order;
 import ru.nikitalubimov.iMarket.data.OrderItem;
 import ru.nikitalubimov.iMarket.integration.CartServiceIntegration;
@@ -22,17 +24,18 @@ public class OrderService {
     private final ProductService productService;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final OrderConverter orderConverter;
 
     @Transactional
-    public Order createdOrder(String userName) {
-        CartDto cartDto = cartServiceIntegration.getCurrentCart();
+    public OrderDto createdOrder(String userName) {
+        CartDto cartDto = cartServiceIntegration.getCurrentCart(userName);
         Order order = new Order();
         order.setUserName(userName);
 
         orderRepository.save(order);
 
         List<OrderItem> orderItems = cartDto.getCartItemList().stream().map(cartItem -> new OrderItem(
-                productService.findById(cartItem.getProductId()).orElseThrow(()-> new ResourceNotFoundException("Product not found (method: createdOrder)")),
+                productService.findById(cartItem.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found (method: createdOrder)")),
                 order,
                 cartItem.getQuantity(),
                 cartItem.getPricePerProduct(),
@@ -43,6 +46,12 @@ public class OrderService {
         order.setItems(orderItems);
         order.setTotalPrice(cartDto.getTotalPrice());
         orderRepository.save(order);
-        return order;
+        OrderDto orderDto = orderConverter.entityToDto(order);
+        return orderDto;
+    }
+
+
+    public List<Order> getCurrentOrder(String userName) {
+        return orderRepository.findByUserName(userName);
     }
 }

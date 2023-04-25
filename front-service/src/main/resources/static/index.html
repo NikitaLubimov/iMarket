@@ -1,27 +1,37 @@
 <!doctype html>
 
-<html ng-app="app">
+<html ng-app="iMarket">
 
 <head>
     <meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
-    <script src="index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
 </head>
 
 <body>
 
 <div class="container" ng-controller="indexController">
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/">iMarket</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/store">Каталог товаров</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/cart">Корзина</a>
+                </li>
+                <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <a class="nav-link" href="#!/orders">Мои заказы</a>
+                </li>
+
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <form class="align-middle" ng-submit="tryToAuth()">
                         <div class="input-group input-group-sm" style="padding: 4px;">
@@ -31,11 +41,14 @@
                             <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
                                    aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
 
-                            <button id="navLoginSubmit" class="btn btn-outline-success btn-sm"
+                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
                                     style="margin-left: 10px;" type="submit">Войти
                             </button>
                         </div>
                     </form>
+                </li>
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <a class="nav-link" href="#!/registration">Регистрация</a>
                 </li>
                 <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
                     <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
@@ -44,128 +57,14 @@
         </div>
     </nav>
 
-    <form novalidate ng-submit="loadProducts()">
-        <div class="form-floating input-group-sm">
-            <input type="text" class="form-control" id="filterTitle" placeholder="" ng-model="filter.title_part">
-            <label for="filterTitle">Название продукта</label>
-        </div>
-        <p></p>
-        <div class="form-floating input-group-sm">
-            <input type="number" class="form-control" id="filterMinPrice" placeholder="" ng-model="filter.min_price">
-            <label for="filterMinPrice">Мин. цена</label>
-        </div>
-        <p></p>
-        <div class="form-floating input-group-sm">
-            <input type="number" class="form-control" id="filterMaxPrice" placeholder="" ng-model="filter.max_price">
-            <label for="filterMaxPrice">Макс. цена</label>
-        </div>
-        <p></p>
-        <button class="btn btn-outline-warning btn-sm" style="width: 100%;" type="submit">Применить</button>
-    </form>
+    <ng-view></ng-view>
 
-    <p></p>
-
-    <h3>Каталог товаров</h3>
-    <table class="table table-hover">
-        <tr>
-            <td>ID</td>
-            <td>Название</td>
-            <td>Цена</td>
-        </tr>
-        <tbody>
-        <tr ng-repeat="p in ProductsPage.content">
-            <td>{{p.id}}</td>
-            <td>{{p.title}}</td>
-            <td>{{p.cost}}</td>
-            <td>
-                <button class="btn btn-outline-danger btn-sm" ng-click="ProductDelete(p.id)">Удалить</button>
-            </td>
-            <td>
-                <button class="btn btn-outline-primary btn-sm" ng-click="CartProductAdd(p.id)">Добавить в корзину
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <form class="container">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" ng-model="product.title" required="required">
-        <br>
-        <label for="cost" class="form-label">Cost</label>
-        <input type="number" class="form-control" id="cost" ng-model="product.cost" required="required">
-        <br>
-        <a class="btn btn-outline-success" href="index.html" role="button" ng-click="addProduct(product)">Сохранить</a>
-    </form>
-
-    <p></p>
-
-    <h3>Корзина</h3>
-    <table class="table table-hover">
-        <tr>
-            <td>Название</td>
-            <td>Колличество</td>
-            <td>Ценна</td>
-            <td>Сумма</td>
-            <td>
-                <button class="btn btn-outline-danger btn-sm" ng-click="clearCart()">Очистить корзину</button>
-            </td>
-        </tr>
-        <tbody>
-        <tr ng-repeat="item in cart.cartItemList">
-            <td>{{item.productTitle}}</td>
-            <td>
-                <button class="btn btn-outline-secondary btn-sm" ng-click="ChangeQuantityMinus(item.productId)">-
-                </button>
-                {{item.quantity}}
-                <button class="btn btn-outline-secondary btn-sm" ng-click="ChangeQuantityPlus(item.productId)">+
-                </button>
-            </td>
-            <td>{{item.pricePerProduct}}</td>
-            <td>{{item.price}}</td>
-            <td>
-                <button class="btn btn-outline-danger btn-sm" ng-click="deleteItemCart(item.productId)">Удалить</button>
-            </td>
-        </tr>
-        <tr>
-            <td>Итого</td>
-            <td></td>
-            <td></td>
-            <td>{{cart.totalPrice}}</td>
-            <td>
-                                <button class="btn btn-outline-success btn-sm" ng-click="createdOrder()">Оформить заказ</button>
-<!--                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Оформить заказ</button>-->
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <script src="index.js"></script>
+    <script src="store/store.js"></script>
+    <script src="cart/cart.js"></script>
+    <script src="orders/orders.js"></script>
+    <script src="welcome/welcome.js"></script>
+    <script src="registration/registration.js"></script>
 </div>
-
-<!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>-->
-<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <form>-->
-<!--                    <div class="mb-3">-->
-<!--                        <label for="recipient-name" class="col-form-label">Введите адрес</label>-->
-<!--                        <input type="text" class="form-control" ng-model="userDetail.address" id="recipient-name">-->
-<!--                    </div>-->
-<!--                    <div class="mb-3">-->
-<!--                        <label for="message-text" class="col-form-label">Ваш Email</label>-->
-<!--                        <input type="text" class="form-control" ng-model="userDetail.email" id="message-text">-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>-->
-<!--                <button type="button" class="btn btn-primary" ng-click="createdOrder(user.address, user.email)" >Оформить заказ</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 </body>
 </html>

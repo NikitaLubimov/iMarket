@@ -1,131 +1,96 @@
-angular.module('app', ['ngStorage']).controller('indexController', function ($scope, $rootScope, $http, $localStorage) {
+(function () {
+    angular
+        .module('iMarket', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-    if ($localStorage.springWebUser) {
-        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'welcome/welcome.html',
+                controller: 'welcomeController'
+            })
+            .when('/store', {
+                templateUrl: 'store/store.html',
+                controller: 'storeController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
+            .when('/registration', {
+                templateUrl: 'registration/registration.html',
+                controller: 'registrationController'
+            })
+            .otherwise({
+                redirectTo: '/'
+            });
     }
 
-    const contextPathCoreService = 'http://localhost:5555/core/api/v1';
-    const contextPathCartsService = 'http://localhost:5555/cart/api/v1';
-
-    $scope.loadProducts = function (pageIndex = 1) {
-        $http({
-            url: contextPathCoreService + '/products',
-            method: 'GET',
-            params: {
-                title_part: $scope.filter ? $scope.filter.title_part : null,
-                min_price: $scope.filter ? $scope.filter.min_price : null,
-                max_price: $scope.filter ? $scope.filter.max_price : null
+    function run($rootScope, $http, $localStorage) {
+        if ($localStorage.iMarketUser) {
+            try {
+                let jwt = $localStorage.iMarketUser.token;
+                let payload = JSON.parse(atob(jwt.split('.')[1]));
+                let currentTime = parseInt(new Date().getTime() / 1000);
+                if (currentTime > payload.exp) {
+                    console.log("Token is expired!!!");
+                    delete $localStorage.iMarketUser;
+                    $http.defaults.headers.common.Authorization = '';
+                }
+            } catch (e) {
             }
-        }).then(function (response) {
-            $scope.ProductsPage = response.data;
-        });
-    };
 
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.iMarketUser.token;
+        }
 
-    $scope.addProduct = function (product) {
-        $http.post(contextPathCoreService + '/products', product).success(function () {
-            $scope.product.title = '';
-            $scope.product.cost = '';
-        }).then(function () {
-            $scope.loadProducts();
-        })
-    };
+        if (!$localStorage.iMarketGuestCartId) {
+            $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
+                .then(function successCallback(response) {
+                    $localStorage.iMarketGuestCartId = response.data.value;
+                });
+        }
+    }
+})();
 
+angular.module('iMarket').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
     $scope.tryToAuth = function () {
         $http.post('http://localhost:5555/auth/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.springWebUser = {username: $scope.user.username, token: response.data.token};
+                    $localStorage.iMarketUser = {username: $scope.user.username, token: response.data.token};
 
                     $scope.user.username = null;
                     $scope.user.password = null;
-                    $scope.loadProducts();
+
+                    $location.path('/');
                 }
             }, function errorCallback(response) {
-
             });
     };
 
-    $scope.tryToLogout = function () {
+
+    $rootScope.tryToLogout = function () {
         $scope.clearUser();
-        if ($scope.user.username) {
-            $scope.user.username = null;
-        }
-        if ($scope.user.password) {
-            $scope.user.password = null;
-        }
+        $scope.user = null;
+        $location.path('/');
     };
 
     $scope.clearUser = function () {
-        delete $localStorage.springWebUser;
+        delete $localStorage.iMarketUser;
         $http.defaults.headers.common.Authorization = '';
     };
 
     $rootScope.isUserLoggedIn = function () {
-        if ($localStorage.springWebUser) {
+        if ($localStorage.iMarketUser) {
             return true;
         } else {
             return false;
         }
     };
-
-    $scope.loadCart = function () {
-        $http.get(contextPathCartsService + '/cart').then(function (response) {
-            $scope.cart = response.data;
-        })
-    };
-
-    $scope.CartProductAdd = function (productId) {
-        $http.post(contextPathCartsService + '/cart/' + productId).then(function () {
-            $scope.loadCart();
-        })
-    };
-
-    $scope.ProductDelete = function (productId) {
-        $http.delete(contextPathCoreService + "/products/" + productId).then(function () {
-            $scope.loadProducts();
-        })
-    };
-
-    $scope.ChangeQuantityPlus = function (productId) {
-        $http.get(contextPathCartsService + '/cart/changePlus/' + productId).then(function () {
-            $scope.loadCart();
-        })
-    };
-
-    $scope.ChangeQuantityMinus = function (productId) {
-        $http.get(contextPathCartsService + '/cart/changeMinus/' + productId).then(function () {
-            $scope.loadCart();
-        })
-    };
-
-    $scope.deleteItemCart = function (productId) {
-        $http.delete(contextPathCartsService + '/cart/' + productId).then(function () {
-            $scope.loadCart();
-        })
-    };
-
-
-    $scope.clearCart = function (productId) {
-        $http.delete(contextPathCartsService + '/cart/clearCart').then(function () {
-            $scope.loadCart();
-        })
-    };
-
-    $scope.createdOrder = function () {
-        $http.post(contextPathCoreService + '/order') .then(function () {
-            $scope.clearCart();
-        })
-    };
-
-    // $scope.createdOrder = function (address, email) {
-    //     $http.post(contextPathCoreService + '/order'+ address + '/' + email) .then(function () {
-    //         $scope.clearCart();
-    //     })
-    // };
-
-    $scope.loadProducts();
-    $scope.loadCart();
-
 });

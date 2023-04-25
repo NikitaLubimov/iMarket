@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.nikitalubimov.iMarket.api.ProductDto;
 import ru.nikitalubimov.iMarket.converters.ProductMapper;
 import ru.nikitalubimov.iMarket.data.Product;
@@ -50,6 +51,7 @@ public class ProductService {
         return MAPPER.toDto(product);
     }
 
+    @Transactional
     public void deleteProductById(long id) {
         log.info("ProductService - > deleteProductById");
         productRepository.deleteById(id);

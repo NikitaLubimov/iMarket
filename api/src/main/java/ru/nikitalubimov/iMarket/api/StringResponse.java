@@ -7,6 +7,10 @@ public class StringResponse {
     public StringResponse() {
     }
 
+    public StringResponse(String value) {
+        this.value = value;
+    }
+
     public String getValue() {
         return value;
     }
@@ -15,7 +19,5 @@ public class StringResponse {
         this.value = value;
     }
 
-    public StringResponse(String value) {
-        this.value = value;
-    }
+
 }

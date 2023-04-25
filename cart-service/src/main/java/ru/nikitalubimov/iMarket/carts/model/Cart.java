@@ -20,7 +20,7 @@ public class Cart {
     }
 
     public List<CartItem> getCartItemList() {
-        return Collections.unmodifiableList(cartItemList);
+        return cartItemList;
     }
 
     public void add(ProductDto product) {
